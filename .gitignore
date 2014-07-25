@@ -35,6 +35,10 @@ Icon
 .Spotlight-V100
 .Trashes
 
+#history and data
+.Rhistory
+.Rdata
+
 #dataset files
 UCI HAR Dataset/
 getdata_projectfiles_UCI HAR Dataset.zip
