@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>README</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>README</h1>
+
+<h2>Instructions</h2>
+
+<p>The run_analysis.R file (the script) will look for the &#39;getdata_projectfiles_UCI HAR Dataset.zip&#39; (the zip file) in the working directory. If it is not found, then it will try to download it. </p>
+
+<p>The script is self contained so the only thing you need is to either execute it with the zip file present in the working directory, or make sure that your internet connection is working and execute the script without the zip file present.</p>
+
+<p>You need to have permission to write into the folder you have as working directory when you run the script.
+Even if the zip file is already there, the script will extract its contents, so it will write files.
+The output is also written out to a file, so for this it is also needed to have write permission.</p>
+
+<p>If you prefer manual download of the zip file, the following is the url from which it was taken:
+<a href="https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip">https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip</a></p>
+
+<h2>Description of Raw data</h2>
+
+<p>The raw dataset contains measures from the accelerometer and the gyroscope of a Samsung phone. This data was collected during a study trying to build a classifier that could identify the activity being performed from readings of a similar device.
+Due to the purpose of the original study, the data is split into two types : training data, and testing data.</p>
+
+<p>Each of these types  of data is itself split into two files. One contains the id numbers for each of the subjects in the study, the other contains the measure for more than 500 features that were measured and produced during the study, but only a small subset is used in this analysis.</p>
+
+<p>The URL for the original study is the following:
+<a href="http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones">http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones</a></p>
+
+<h3>Summary of script process</h3>
+
+<ol>
+<li>Load the four test and train data files into dataframes:
+
+<ul>
+<li>one file (X) for train and one for test dataset, containing the values obtained for the features in the original study</li>
+<li>one file (y) for train and one for test dataset, containing the values of &ldquo;subject_id&rdquo;, which represent the subject from whom the measures in (X) where taken</li>
+</ul></li>
+<li>Load the data set containing feature names and the activity names into vectors</li>
+<li>Join the column containing subject_id to the matching dataset (i.e. test subject_id dataset with test features dataset)</li>
+<li>Filter the vector containing feature names to only include those representing a standard deviation or a mean (mean frequency included)</li>
+<li>Set the column names for the test and train features data frames from the <strong>COMPLETE</strong> vector of feature names</li>
+<li>Use the <strong>FILTERED</strong> feature names vector to subset both training and test features data frames</li>
+<li>Convert the activity column on both train and test features datasets into a string factor using the activity names vector</li>
+<li>rowbind both training and test features data frames into a single data frame</li>
+<li>Melt the merged data frame and cast into the a new dataframe</li>
+<li>Write this new data frame into the HAR_tidy.txt file.</li>
+</ol>
+
+<h2>List of Files</h2>
+
+<ul>
+<li>README.md  : this file should be read first [hope this was so]</li>
+<li>CodeBook.md : Contains a description of the output dataset and the variables in it</li>
+<li>run_analysis.R : contains the script for processing the raw data and producing the output file.</li>
+<li>HAR_tidy.txt : this contains the final output of the script every time you run it it will be overwritten</li>
+</ul>
+
+</body>
+
+</html>
+

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=9" >
+
+<title>Dataset description</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Dataset description</h1>
+
+<p>As mentioned in the README, the raw data set inlcudes measures for hundreds of features. Out of these, only 78 were selected for this analysis. The selection was limited to those features that represented either a mean or a standard deviation value. For this analysis, the mean frequency measures are included in the selected features. In total, 78 features were selected for processing and inclusion in the final output of the script.</p>
+
+<p>The final output of the script is the data included in the HAR_tidy file, from now on referred to as <em>tidy dataset</em> is a collection of the mean value for each of the 78 feature selected from the raw dataset.  There are two identifying values into this dataset, which are also very useful identifiers in the raw dataset : the id for the subject doing activities (thus generating data), and the id for the activity being performed. </p>
+
+<p>The mean was calculated based on these two identifying variables. The grouping was done first by subject and second by activity. 
+I summary, this means that for any row in the tidy dataset, you will find the mean value, for that subject and that activity, for each of the 78 features selected out of the original dataset.</p>
+
+<h1>Transformations</h1>
+
+<ol>
+<li>Load the four test and train data files into dataframes:
+
+<ul>
+<li>one file (X) for train and one for test dataset, containing the values obtained for the features in the original study</li>
+<li>one file (y) for train and one for test dataset, containing the values of &ldquo;subject_id&rdquo;, which represent the subject from whom the measures in (X) where taken</li>
+</ul></li>
+<li>Load the data set containing feature names and the activity names into vectors</li>
+<li>Join the column containing subject_id to the matching dataset (i.e. test subject_id dataset with test features dataset)</li>
+<li>Filter the vector containing feature names to only include those representing a standard deviation or a mean (mean frequency included)</li>
+<li>Set the column names for the test and train features data frames from the <strong>COMPLETE</strong> vector of feature names</li>
+<li>Use the <strong>FILTERED</strong> feature names vector to subset both training and test features data frames</li>
+<li>Convert the activity column on both train and test features datasets into a string factor using the activity names vector</li>
+<li>rowbind both training and test features data frames into a single data frame</li>
+<li>Melt the merged data frame and cast into the a new dataframe</li>
+<li>Write this new data frame into the HAR_tidy.txt file.</li>
+</ol>
+
+<h1>Variables</h1>
+
+<p>There is a total of 80 variables. Two of these variables serve to identify the subject participating in the test and the activity being measured. These are referred to as <em>identifying variables</em> and are presented first.</p>
+
+<p>I will refer to the other 78 variables as the <em>feature variables</em>.These variables represent the mean value for 78 of the features contained in the original dataset. For the mean calculation, the values where grouped by subject first, and then by activity.</p>
+
+<p>So in quick summary, </p>
+
+<h2>Identifying variables</h2>
+
+<h3>subjectid</h3>
+
+<ul>
+<li>Long Name:Subject Identifier</li>
+<li>Type:Integer</li>
+<li>Range:1..30</li>
+<li>Meaning:Represents the unique identifier for each of the volunteer subjects in the original study.</li>
+</ul>
+
+<h3>activity</h3>
+
+<ul>
+<li>Long Name:Activity Name</li>
+<li>Type:String</li>
+<li>Range: {WALKING,WALKING_UPSTAIRS,WALKING_DOWNSTAIRS,SITTING,STANDING,LAYING}</li>
+<li>Meaning:Represents which one out of the six types of activities reviewed was being performed at the time the measure was taken</li>
+</ul>
+
+<h2>Naming pattern for feature variables</h2>
+
+<p>The 78 feature variables included follow either one of the following two naming patterns:</p>
+
+<ul>
+<li><p>Pattern 1:
+&lt;domain-of-signal&gt;&lt;signal&gt;-&lt;variable-extracted&gt;-&lt;signal-component&gt;</p></li>
+<li><p>Pattern 2:
+&lt;domain-of-signal&gt;&lt;signal&gt;&lt;signal-component&gt;-&lt;variable-extracted&gt;</p></li>
+</ul>
+
+<h3>Explanation of the elements in the naming patterns</h3>
+
+<p>The only difference between patterns is the order of the elements, but the meaning of each elements is the same.
+(i.e. these description are valid for both naming patterns)</p>
+
+<ol>
+<li><p>domain-of-signal can be any single value in {t,f}</p>
+
+<ul>
+<li>t means it was a time domain signal, taken every 50 Mhz</li>
+<li>f means it was a frequency signal, obtained from a Fourier transform on time signals</li>
+</ul></li>
+<li><p>signal can be any single value in {BodyAcc,GravityAcc,BodyGyro}</p>
+
+<ul>
+<li>BodyAcc indicate the signal was from the accelerometer, and then was filtered to obtain the body acceleration</li>
+<li>GravityAcc indicate the signal was taken from the accelerometer, and then was filtered to obtain the gravity acceleration</li>
+<li>BodyGyro indicate the signal was taken from the gyroscope </li>
+</ul></li>
+<li><p>signal-component can be any single value in {X,Y,Z,Mag,Jerk}</p>
+
+<ul>
+<li>X,Y or Z indicate it is the corresponding vector component in the measured signal</li>
+<li>Mag indicate it is the magnitude of the measured signal</li>
+<li>Jerk indicate it is the calculated Jerk from the measured signal</li>
+</ul></li>
+<li><p>variable-extracted can be any single value in {mean(),std(),meanFreq()}</p>
+
+<ul>
+<li>mean() means this value is the mean of the corresponding measured values</li>
+<li>std() means this value is the standard deviatio for the corresponding measured values</li>
+<li>meanFreq() means this value is the mean of the frequencies for the corresponding measured values</li>
+</ul></li>
+</ol>
+
+<h3>Example breakdown of naming pattern :</h3>
+
+<p>For naming pattern 1: 
+tBodyAcc-mean()-X
+t -&gt; means it is a time domain signal
+BodyAcc -&gt; means it is taken from the accelerometer signal, and filtered to only obtain body acceleration
+mean() -&gt; means the Mean of the values was calculated
+x -&gt; means it was taken from the X component of the signal vector</p>
+
+<p>For naming pattern 2:
+tBodyAccMag-std()
+t -&gt; means it is a time domain signal
+BodyAcc -&gt; means it is taken from the accelerometer signal, and filtered to only obtain body acceleration
+Mag -&gt; means the calues collected where the magnitude of the signal vector
+std() -&gt; means the standard deviation for the collected values was calculated</p>
+
+<h3>List of feature variables</h3>
+
+<p>Following is the full list of variables that follow this naming schema:
+Type: Float
+Meaning: Please see naming pattern reference to extract full meaning for each variable </p>
+
+<ul>
+<li>tBodyAcc-mean()-X</li>
+<li>tBodyAcc-mean()-Y</li>
+<li>tBodyAcc-mean()-Z</li>
+<li>tBodyAcc-std()-X</li>
+<li>tBodyAcc-std()-Y</li>
+<li>tBodyAcc-std()-Z</li>
+<li>tGravityAcc-mean()-X</li>
+<li>tGravityAcc-mean()-Y</li>
+<li>tGravityAcc-mean()-Z</li>
+<li>tGravityAcc-std()-X</li>
+<li>tGravityAcc-std()-Y</li>
+<li>tGravityAcc-std()-Z</li>
+<li>tBodyAccJerk-mean()-X</li>
+<li>tBodyAccJerk-mean()-Y</li>
+<li>tBodyAccJerk-mean()-Z</li>
+<li>tBodyAccJerk-std()-X</li>
+<li>tBodyAccJerk-std()-Y</li>
+<li>tBodyAccJerk-std()-Z</li>
+<li>tBodyGyro-mean()-X</li>
+<li>tBodyGyro-mean()-Y</li>
+<li>tBodyGyro-mean()-Z</li>
+<li>tBodyGyro-std()-X</li>
+<li>tBodyGyro-std()-Y</li>
+<li>tBodyGyro-std()-Z</li>
+<li>tBodyGyroJerk-mean()-X</li>
+<li>tBodyGyroJerk-mean()-Y</li>
+<li>tBodyGyroJerk-mean()-Z</li>
+<li>tBodyGyroJerk-std()-X</li>
+<li>tBodyGyroJerk-std()-Y</li>
+<li>tBodyGyroJerk-std()-Z</li>
+<li>tBodyAccMag-mean()</li>
+<li>tBodyAccMag-std()</li>
+<li>tGravityAccMag-mean()</li>
+<li>tGravityAccMag-std()</li>
+<li>tBodyAccJerkMag-mean()</li>
+<li>tBodyAccJerkMag-std()</li>
+<li>tBodyGyroMag-mean()</li>
+<li>tBodyGyroMag-std()</li>
+<li>tBodyGyroJerkMag-mean()</li>
+<li>tBodyGyroJerkMag-std()</li>
+<li>fBodyAcc-mean()-X</li>
+<li>fBodyAcc-mean()-Y</li>
+<li>fBodyAcc-mean()-Z</li>
+<li>fBodyAcc-std()-X</li>
+<li>fBodyAcc-std()-Y</li>
+<li>fBodyAcc-std()-Z</li>
+<li>fBodyAcc-meanFreq()-X</li>
+<li>fBodyAcc-meanFreq()-Y</li>
+<li>fBodyAcc-meanFreq()-Z</li>
+<li>fBodyAccJerk-mean()-X</li>
+<li>fBodyAccJerk-mean()-Y</li>
+<li>fBodyAccJerk-mean()-Z</li>
+<li>fBodyAccJerk-std()-X</li>
+<li>fBodyAccJerk-std()-Y</li>
+<li>fBodyAccJerk-std()-Z</li>
+<li>fBodyAccJerk-meanFreq()-X</li>
+<li>fBodyAccJerk-meanFreq()-Y</li>
+<li>fBodyAccJerk-meanFreq()-Z</li>
+<li>fBodyGyro-mean()-X</li>
+<li>fBodyGyro-mean()-Y</li>
+<li>fBodyGyro-mean()-Z</li>
+<li>fBodyGyro-std()-X</li>
+<li>fBodyGyro-std()-Y</li>
+<li>fBodyGyro-std()-Z</li>
+<li>fBodyGyro-meanFreq()-X</li>
+<li>fBodyGyro-meanFreq()-Y</li>
+<li>fBodyGyro-meanFreq()-Z</li>
+<li>fBodyAccMag-mean()</li>
+<li>fBodyAccMag-std()</li>
+<li>fBodyAccMag-meanFreq()</li>
+<li>fBodyBodyAccJerkMag-mean()</li>
+<li>fBodyBodyAccJerkMag-std()</li>
+<li>fBodyBodyAccJerkMag-meanFreq()</li>
+<li>fBodyBodyGyroMag-mean()</li>
+<li>fBodyBodyGyroMag-std()</li>
+<li>fBodyBodyGyroMag-meanFreq()</li>
+<li>fBodyBodyGyroJerkMag-mean()</li>
+<li>fBodyBodyGyroJerkMag-std()</li>
+<li>fBodyBodyGyroJerkMag-meanFreq()</li>
+</ul>
+
+</body>
+
+</html>
+
