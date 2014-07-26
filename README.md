@@ -1,9 +1,15 @@
 # README 
+
+This project is meant to help analyze some existing data on intended for Human Activity Recognition (HAR).
+The aim is to present the complez raw dataset in a summarized state that allows for some further analysis.
+
 ## Instructions
 
 The run\_analysis.R file (the script) will look for the 'getdata\_projectfiles\_UCI HAR Dataset.zip' (the zip file) in the working directory. If it is not found, then it will try to download it. 
 
-The script is self contained so the only thing you need is to either execute it with the zip file present in the working directory, or make sure that your internet connection is working and execute the script without the zip file present.
+The script is self contained so the only thing you need is to either execute it with the zip file present in the working directory, or make sure that your internet connection is working and execute the script without the zip file present. 
+To execute the scrip, simply open R studio or an R command line, and source the file like so:
+source("run_analysis.R"). The code will execute immediately. There are no functions  defined in the script, so you need to source it every time you want to execute it.
 
 You need to have permission to write into the folder you have as working directory when you run the script.
 Even if the zip file is already there, the script will extract its contents, so it will write files.
